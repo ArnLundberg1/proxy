@@ -1,40 +1,30 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mini JSONP Proxy</title>
-  <style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: #f0f0f0; }
-    input { width: 60%; padding: 10px; margin: 10px 0; }
-    button { padding: 10px 20px; margin-left: 10px; }
-    pre { text-align: left; background: #fff; padding: 20px; overflow-x: auto; max-height: 400px; }
-  </style>
+<meta charset="UTF-8">
+<title>Mini Web Proxy</title>
+<style>
+body { font-family: Arial; text-align: center; padding: 30px; }
+input { width: 60%; padding: 10px; }
+button { padding: 10px 20px; }
+iframe { width: 100%; height: 80vh; margin-top: 20px; border: none; }
+</style>
 </head>
 <body>
-  <h1>Mini JSONP Proxy</h1>
-  <input type="text" id="urlInput" placeholder="Ange JSONP API URL">
-  <button onclick="loadData()">Hämta Data</button>
-  <pre id="output"></pre>
+<h1>Mini Web Proxy</h1>
+<input type="text" id="urlInput" placeholder="Ange webbadress t.ex. https://example.com">
+<button onclick="loadSite()">Öppna</button>
+<iframe id="proxyFrame"></iframe>
 
-  <script>
-    function loadData() {
-      const url = document.getElementById('urlInput').value;
-      if (!url) return alert('Ange en URL!');
-      
-      // Ta bort gamla script-taggar så vi inte lägger till flera
-      const oldScript = document.getElementById('jsonpScript');
-      if (oldScript) oldScript.remove();
-
-      const script = document.createElement('script');
-      script.id = 'jsonpScript';
-      script.src = url + (url.includes('?') ? '&' : '?') + 'callback=handleResponse';
-      document.body.appendChild(script);
-    }
-
-    function handleResponse(data) {
-      document.getElementById('output').textContent = JSON.stringify(data, null, 2);
-    }
-  </script>
+<script>
+function loadSite() {
+  const url = document.getElementById('urlInput').value;
+  if (!url) return alert('Ange en webbadress!');
+  
+  // Offentlig proxy som tillåter iframe (kan ändras om proxy flyttas)
+  const proxy = 'https://www.proxysite.com/?u=';
+  document.getElementById('proxyFrame').src = proxy + encodeURIComponent(url);
+}
+</script>
 </body>
 </html>
