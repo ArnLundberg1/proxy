@@ -1,31 +1,15 @@
-<!DOCTYPE html>
-<html lang="sv">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mini Web Proxy</title>
-<style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: #f0f0f0; }
-    input { width: 60%; padding: 10px; margin: 10px 0; }
-    button { padding: 10px 20px; }
-    iframe { width: 100%; height: 80vh; border: none; margin-top: 20px; }
-</style>
-</head>
-<body>
-<h1>Mini Web Proxy</h1>
-<input type="text" id="urlInput" placeholder="Skriv in webbadress t.ex. https://example.com">
-<button onclick="loadSite()">Öppna</button>
-<iframe id="proxyFrame"></iframe>
+<input id="urlInput" placeholder="Ange JSONP API">
+<button onclick="loadData()">Hämta Data</button>
+<pre id="output"></pre>
 
 <script>
-function loadSite() {
-    const url = document.getElementById('urlInput').value;
-    if (!url) return alert('Skriv in en webbadress!');
-    
-    // En enkel proxy via CORS Anywhere (laglig demo)
-    const proxy = 'https://corsproxy.io/?';
-    document.getElementById('proxyFrame').src = proxy + encodeURIComponent(url);
+function loadData() {
+  const url = document.getElementById('urlInput').value;
+  const script = document.createElement('script');
+  script.src = url + '?callback=handleResponse';
+  document.body.appendChild(script);
+}
+function handleResponse(data) {
+  document.getElementById('output').textContent = JSON.stringify(data, null, 2);
 }
 </script>
-</body>
-</html>
